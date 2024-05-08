@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunknullaha_github_io=self.webpackChunknullaha_github_io||[]).push([[2224],{1976:(e,a,h)=>{h.r(a),h.d(a,{default:()=>u});h(6540);var i=h(781),s=h(4848);function u(){return(0,s.jsxs)(i.A,{children:[(0,s.jsx)("h1",{children:"My React page"}),(0,s.jsx)("p",{children:"This is a React page"})]})}}}]);
