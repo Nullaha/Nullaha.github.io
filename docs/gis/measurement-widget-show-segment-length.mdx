@@ -1,0 +1,251 @@
+---
+sidebar_position: 1
+title: measurement widget show segment length
+description: 测量工具，显示每条线段的长度
+date: 2024-5-9
+last_update: 2024-5-9
+
+tags: [arcgis for js4]
+---
+
+## 需求
+希望 Measurement 的 distance只显示总长度，希望能显示每条线段的长度。
+
+
+## 源码分析
+
+从`DistanceMeasurement2DTool.js`源码可以看出来，在地图上边画线段，边显示长度是在这个文件里执行的。
+
+其实主要就是`draw`，监听`drawAction`的事件，然后更新`_updatePolylines`咯。
+```js 
+_startSketch() {
+  this._drawActive = !0;
+  const e = this._draw.create("polyline", { mode: "click" });
+  e.on(
+    [
+      "vertex-add",
+      "vertex-update",
+      "vertex-remove",
+      "cursor-update",
+      "undo",
+      "redo",
+    ],
+    (e) => this._updateSketch(e.vertices)
+  ),
+    e.on("draw-complete", () => {
+      this._stopSketch();
+    });
+}
+
+  _updatePolylines() {
+    if (this._vertices.length < 2)
+      return void this._measurementLayer.removeAll();
+
+    // 获取所有顶点的坐标
+    const e = this._vertices.map(({ coord: e }) => e)
+    // 使用 O 函数测量折线，得到测量结果、绘图几何和原始折线
+    const {
+        measurement: o,
+        drawing: a,
+        original: n,
+      } = O(e, this.view.spatialReference, this.geodesicDistanceThreshold);
+    this._set("measurement", o);
+    const l = H(this.messages, o, this.unit);
+    let m, c;
+    this._set("measurementLabel", l);
+    const { graphics: h } = this._measurementLayer,
+      p = 2 === h.length,
+      { effectiveTheme: u } = this.view;
+      
+    // 如果已有两个图形，分别设置 m 和 c
+    // 否则，创建新的折线和标签图形
+    p
+      ? ((m = h.at(0)), (c = h.at(1)))
+      : ((m = new t({
+          symbol: new D({
+            data: {
+              type: "CIMSymbolReference",
+              symbol: {
+                type: "CIMLineSymbol",
+                symbolLayers: [
+                  {
+                    type: "CIMSolidStroke",
+                    effects: [
+                      {
+                        type: "CIMGeometricEffectDashes",
+                        dashTemplate: [14, 12],
+                        lineDashEnding: "FullGap",
+                        controlPointEnding: "NoConstraint",
+                      },
+                    ],
+                    enable: !0,
+                    capStyle: "Butt",
+                    joinStyle: "Round",
+                    width: 3.5,
+                    color: r(u.accentColor).toArray(),
+                  },
+                  {
+                    type: "CIMSolidStroke",
+                    enable: !0,
+                    capStyle: "Butt",
+                    joinStyle: "Round",
+                    width: 5,
+                    color: u.accentColor.toArray(),
+                  },
+                ],
+              },
+            },
+          }),
+        })),
+        (c = new t({
+          symbol: new G({
+            color: u.textColor,
+            haloColor: s(r(u.textColor, i.Low), 0.5),
+            haloSize: 2,
+            font: new R({ size: 14, family: "sans-serif" }),
+          }),
+        })),
+        h.removeAll(),
+        h.addMany([m, c])),
+      (m.geometry = a),
+      (c.geometry = n.extent?.center),
+      (c.symbol.text = l);
+  }
+};
+```
+
+## 思路
+本来我想监听一下它的事件，然后添加一个图层用来记录分段长度值。  
+但是发现好像不可行。
+那就直接去修改源码好了。
+
+## 解决
+只需要监听`viewModel.activeViewModel.tool`的变化，当它被创建后，直接替换它原来的`_updatePolylines`方法咯，加上我自己要加的代码。  
+`addSegmentLength`:  
+1. 只保留 `_measurementLayer`中前两个`graphics`,其它都删掉。  
+2. 遍历 `vertices` ,两两算线段长度，添加到 `_measurementLayer`中。
+3. (计算线段长度的用的是源码里的方法，我给改了一下而已。)
+
+```js
+
+initMeasure() {
+    this.showResultLayer();
+    if (!this.measure) {
+        this.measure = new Measurement({
+            view: this.view,
+            container: this.container,
+            // areaUnit: 'square-kilometers',
+            // linearUnit: 'kilometers',
+            areaUnit: 'square-meters',
+            linearUnit: 'meters',
+        });
+
+        const handler = this.measure.watch('viewModel.state', (newValue, oldValue, propertyName, target) => {
+            if (newValue == 'measured') {
+                const graphics = target.viewModel.activeViewModel.tool._measurementLayer.graphics;
+                this.saveGraphicToResultLayer(graphics);
+            }
+        });
+        this.measure.addHandles(handler);
+
+        const _self = this;
+        const handler2 = this.measure.watch('viewModel.activeViewModel.tool', (newValue, oldValue, propertyName, target) => {
+            if (newValue) {
+                const _updatePolylines = this.measure.viewModel.activeViewModel.tool._updatePolylines;
+                this.measure.viewModel.activeViewModel.tool._updatePolylines = function () {
+                    _updatePolylines.call(this);
+                    _self.addSegmentLength.call(this);
+                };
+            }
+        });
+        this.measure.addHandles(handler2);
+        // window.ahaM = this.measure;
+    }
+}
+
+/**
+ * Monkey patching
+ */
+async addSegmentLength() {
+    const {graphics : h2} = this._measurementLayer;
+    // 如果图形数量超过 2
+    if (h2?.length > 2) {
+        const firstTwoGraphics = [];
+        firstTwoGraphics.push(h2[0].clone());
+        firstTwoGraphics.push(h2[1].clone());
+        this._measurementLayer.removeAll();
+        this._measurementLayer.addMany(firstTwoGraphics);
+    }
+
+    const _vertices = this._vertices;
+    if (!_vertices || _vertices.length < 3) {
+        return;
+    }
+    const spatialReference = this.view.spatialReference;
+    const geodesicDistanceThreshold = this.geodesicDistanceThreshold;
+    const c2 = h2.at(1);
+    const symbol = c2.symbol;
+    symbol.font.size = 10;
+    for (let i = 1; i < _vertices.length; i++) {
+        const verticesTwo = [_vertices[i - 1], _vertices[i]];
+        const tmp = verticesTwo.map(({ coord: e }) => e);
+        const {
+            measurement: o2,
+            drawing: a2,
+            original: n2,
+        } = await O2(tmp, spatialReference, geodesicDistanceThreshold);
+        
+        const l2 = o2.length.toFixed(2) + ' m';
+        const c3 = new Graphic({
+            symbol: symbol.clone(),
+        });
+
+        c3.geometry = n2.extent?.center;
+        c3.symbol.text = l2;
+        h2.add(c3);
+    }
+}
+
+// 计算线段长度
+async function O2(vertices, spatialReference, r) {
+    const U = 1e5;
+    const line = new Polyline({ paths: [vertices], spatialReference: spatialReference });
+    let length, geom;
+    await projection.load();
+    if (spatialReference.isGeographic) {
+        const e = projection.project(line, SpatialReference.WGS84);
+        const r = geodesicUtils.geodesicDensify(e, U);
+
+        length = geodesicUtils.geodesicLengths([e], 'meters')[0];
+        geom = projection.project(r, spatialReference);
+    } else if (spatialReference.isWebMercator) {
+        length = geometryEngine.geodesicLength(line, 'meters');
+        geom = geometryEngine.geodesicDensify(line, U, 'meters');
+    } else {
+        const e = geometryEngine.planarLength(line, 'meters');
+        if (null != r && e >= r) {
+            const e = projection.project(line, SpatialReference.WGS84);
+            const r = geodesicUtils.geodesicDensify(e, U);
+
+            length = geodesicUtils.geodesicLengths([e], 'meters')[0];
+            geom = projection.project(r, spatialReference);
+        } else {
+            length = e;
+            geom = line;
+        }
+    }
+    return {
+        measurement: { geometry: geom, length },
+        original: line,
+        drawing: geom,
+    };
+}
+
+```
+
+
+## 补充知识  
+
+### 计算线段长度  
+api里计算长度提供的方法，只适用于**wgs84**和**墨卡托投影**。  
+所以，如果是别的坐标系，就需要用先转到**wgs84/墨卡托**，计算完长度，再转回来。
