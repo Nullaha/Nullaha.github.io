@@ -1,18 +1,105 @@
 ---
 sidebar_position: 1
-title: measurement widget show segment length
-description: 测量工具，显示每条线段的长度
+title: measurement widget
+description: 测量工具相关内容
 date: 2024-5-9
-last_update: 2024-5-9
 
 tags: [arcgis for js4]
 ---
 
-## 需求
+## 事件?
+
+The 4.x Measure widget doesn't have events.  
+
+如果想监听完成，应该怎么办？  
+
+``` md
+使用 watch 
+```
+
+```js
+this.measure = new Measurement({
+    view: this.view,
+    container: this.container,
+    areaUnit: 'square-meters',
+    linearUnit: 'meters',
+});
+
+const handler = this.measure.watch('viewModel.state', (newValue, oldValue, propertyName, target) => {
+    if (newValue == 'measured') {
+        const graphics = target.viewModel.activeViewModel.tool._measurementLayer.graphics;
+        this.saveGraphicToResultLayer(graphics);
+    }
+});
+this.measure.addHandles(handler);
+
+
+saveGraphicToResultLayer(graphics) {
+    if (this.resultLayer) {
+        this.view.map.reorder(this.resultLayer, this.view.map.allLayers.length);
+    } else {
+        this.resultLayer = new GraphicsLayer({
+            id: 'measurement-result-layer',
+        });
+        this.view?.map.add(this.resultLayer);
+    }
+    const cloneGras = graphics.map((gra) => {
+        const n = gra.clone();
+        n.visible = false;
+        return n;
+    });
+    this.resultLayer.addMany(cloneGras);
+}
+```
+
+
+### 参考
+
+[Possible events for new Measurement widgets 4.10](https://community.esri.com/t5/arcgis-javascript-maps-sdk-questions/possible-events-for-new-measurement-widgets-4-10/m-p/278961)
+
+---
+
+## Measurement 保存geometry?  
+
+### 需求  
+api 现在画一下，一个结果，画一下一个结果，不会保存上一个结果的。  
+所以如果需求是测量一下，再次测量时，保留上一次测量的结果。  需要自己处理一下。。  
+
+### 思路  
+1. 监听测量完成事件，保存结果咯。  
+
+### 实现  
+
+```js
+this.measure = new Measurement({
+    view: this.view,
+    container: this.container,
+    areaUnit: 'square-meters',
+    linearUnit: 'meters',
+});
+
+const handler = this.measure.watch('viewModel.state', (newValue, oldValue, propertyName, target) => {
+    if (newValue == 'measured') {
+        const graphics = target.viewModel.activeViewModel.tool._measurementLayer.graphics;
+        this.saveGraphicToResultLayer(graphics);
+    }
+});
+this.measure.addHandles(handler);
+```
+
+### 参考
+
+[How to get the geometry of measurement Widget 4.26](https://community.esri.com/t5/arcgis-javascript-maps-sdk-questions/how-to-get-the-geometry-of-measurement-widget-4-26/m-p/1293996)
+
+---
+
+## measurement widget show segment length
+
+### 需求
 希望 Measurement 的 distance只显示总长度，希望能显示每条线段的长度。
 
 
-## 源码分析
+### 源码分析
 
 从`DistanceMeasurement2DTool.js`源码可以看出来，在地图上边画线段，边显示长度是在这个文件里执行的。
 
@@ -114,12 +201,12 @@ _startSketch() {
 };
 ```
 
-## 思路
+### 思路
 本来我想监听一下它的事件，然后添加一个图层用来记录分段长度值。  
 但是发现好像不可行。
 那就直接去修改源码好了。
 
-## 解决
+### 实现
 只需要监听`viewModel.activeViewModel.tool`的变化，当它被创建后，直接替换它原来的`_updatePolylines`方法咯，加上我自己要加的代码。  
 `addSegmentLength`:  
 1. 只保留 `_measurementLayer`中前两个`graphics`,其它都删掉。  
@@ -244,8 +331,13 @@ async function O2(vertices, spatialReference, r) {
 ```
 
 
-## 补充知识  
+### 补充知识  
 
-### 计算线段长度  
+#### 计算线段长度  
 api里计算长度提供的方法，只适用于**wgs84**和**墨卡托投影**。  
 所以，如果是别的坐标系，就需要用先转到**wgs84/墨卡托**，计算完长度，再转回来。
+
+---
+
+## 相关源码  
+[DistanceMeasurement2DTool](../../sourceCode/arcgis-for-js4/DistanceMeasurement2DTool.js)
