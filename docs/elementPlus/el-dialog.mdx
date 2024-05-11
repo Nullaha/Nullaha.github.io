@@ -1,0 +1,65 @@
+---
+sidebar_position: 1
+title: el-dialog
+description: 相关内容
+date: 2024-5-11
+
+tags: [elementPlus, dialog]
+---
+
+## 无法修改 el-dialog 样式?
+
+在`vue3`中，在使用 `el-dialog` 组件时，遇到无法通过穿透等方法修改 `el-dialog` 样式的问题  
+
+无论是使用 `::v-deep`(vue3中已弃用) 又或者是 `:deep()` 以及 `!important` 都无法解决  
+
+### 无效代码如下  
+
+```vue
+<template>
+  <div class="test">
+    <div class="a">
+      test
+    </div>
+  </div>
+
+  <el-dialog ref="dialog">
+      ABC
+  </el-dialog>
+</template>
+<style lang="scss" scoped>
+:deep(.el-dialog) {
+    padding: 0;
+}
+</style>
+```
+### 原因  
+当我们使用scoped的时候，在 html 的标签中会生成data-v-xxx的一个属性，样式穿透就是利用的这个属性生成的css;  
+
+而在 vue3 中，我们可以在template下不使用一个标签来包裹全部内容，而此时el-dialog在第一层的情况下就没有对应的data-v-xxx父级元素标签，所以样式穿透也就无效了.
+
+### 解决  
+```vue
+<template>
+  <div class="test">
+    <div class="a">
+      test
+    </div>
+
+    <el-dialog ref="dialog">
+        ABC
+    </el-dialog>
+  </div>
+</template>
+<style lang="scss" scoped>
+:deep(.el-dialog) {
+    padding: 0;
+}
+</style>
+```
+
+### 参考
+
+[无法修改 el-dialog 样式](https://juejin.cn/post/7170280358578290724)
+
+---
