@@ -79,14 +79,25 @@ ogr2ogr -f "PostgreSQL" PG:"host=xxx.xxx.xx.xxx user=xx password=xxx dbname=xxx"
 执行命令：  
 chcp 65001
 
+### 3. 执行了上面的 `ogr2ogr` 命令，然后修改了某个图层的name，然后再次执行上面的 `ogr2ogr` 命令会报错?   
+
+```md 
+是因为我-overwrite -lco SPATIAL_INDEX=YES，创建了空间索引。  
+所以当我修改了某个图层数据的名字，然后再次执行ogr2ogr时会出现索引冲突！！！！！！
+```
+
+### 4. qgis怎么看有没有创建空间索引? 
+
+直接看表结构咯
+
+
+
 :::
 
 
 :::danger TODO
 
-  1. 执行了上面的 `ogr2ogr` 命令，然后修改了某个图层的name，然后再次执行上面的 `ogr2ogr` 命令会报错?   
-
-  2. postgis怎么看有没有创建空间索引?
+  
 :::
 
 
