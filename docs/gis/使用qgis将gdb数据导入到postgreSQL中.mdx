@@ -4,10 +4,27 @@ title: 使用qgis将gdb数据导入到postgreSQL中
 description: 使用qgis将gdb数据导入到postgreSQL中
 date: 2024-5-14
 
-tags: [QGIS, postgreSQL, gdb]
+tags: [QGIS, postgreSQL, gdb, gis]
 ---
 
 ## 准备工作
+
+### 安装QGIS
+
+### 在qgis中看一眼数据
+
+1. 点击顶部菜单栏中的“图层”（Layer） -> “添加图层”（Add Layer） -> “添加矢量图层”（Add Vector Layer）。
+
+2. 在弹出的窗口中，点击“源类型”（Source Type）下拉菜单，并选择“目录”（Directory）。
+
+3. 在“类型”（Type）下拉菜单中选择“FileGDB”。  
+
+### 在gqis中执行sql  
+
+在QGIS的主菜单中，选择数据库 > DB Manager > DB Manager。  
+```sql 
+SELECT * FROM information_schema.tables WHERE table_name = 'name';
+```
 
 
 ### 连接PostgreSQL数据库  
@@ -16,13 +33,17 @@ tags: [QGIS, postgreSQL, gdb]
 
 ![数据库连接创建界面](./img/qgis/qgis2postgis/数据库连接创建界面.png)
 
+:::tip
+如果一直弹 enter certificates，百分百账号密码不对！
+:::
+
 ### gdb的样子
 ![gdb](./img/qgis/qgis2postgis/gdb.png)
 
 
 ## 操作  
 
-### 方法一：Toolbox中操作 
+### 方法一：Toolbox中操作 (一个一个)
 
 ![export2PostgreSQL](./img/qgis/qgis2postgis/export2PostgreSQL.png)
 
@@ -32,7 +53,7 @@ tags: [QGIS, postgreSQL, gdb]
 
 :::
 
-### 方法二： 使用python  
+### 方法二： 使用python (将gdb整个导入到postgres中)
 
 1. 打开`python console`  
 2. 弹出命令行窗口  
@@ -47,15 +68,30 @@ os.system('cmd.exe')
 ogr2ogr -f "PostgreSQL" PG:"host=xxx.xxx.xx.xxx user=xx password=xxx dbname=xxx" "F:\test.gdb" -overwrite -lco SPATIAL_INDEX=YES -lco LAUNDER=NO -progress
 ```
 
-:::tip 解释命令
-ogr2ogr：命令名  
+:::tip 知识点
+
+### 1. 解释ogr2ogr命令
 -overwrite：如果目标表已经存在，则先删除旧表，再重新创建并导入数据。  
 -lco LAUNDER=NO：保留字段名的原始大小写格式。  
 -lco SPATIAL_INDEX=YES：在导入的几何列上创建空间索引。
+
+### 2. 执行命令后，命令行输出的是乱码?  
+执行命令：  
+chcp 65001
+
 :::
 
 
-### 参考
+:::danger TODO
+
+  1. 执行了上面的 `ogr2ogr` 命令，然后修改了某个图层的name，然后再次执行上面的 `ogr2ogr` 命令会报错?   
+
+  2. postgis怎么看有没有创建空间索引?
+:::
+
+
+
+## 参考
 
 
 
