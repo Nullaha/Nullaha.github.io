@@ -1,0 +1,100 @@
+---
+sidebar_position: 2
+title: 将SLD样式文件上传到GeoServer  
+description: 将SLD样式文件上传到GeoServer  
+date: 2024-5-15
+
+tags: [geoserver, python, gis, sld]
+---
+
+## 一个一个发布样式?
+
+自己去geoserver中点吧。。。  
+
+
+## 批量发布样式?  
+
+将SLD样式文件上传到GeoServer  
+
+### 思路  
+
+编写脚本使用GeoServer REST API   
+
+1. 读文件夹下的sld文件，拿name和path  
+2. 读文件内容。  
+2. post请求 `{geoserver_url}/rest/workspaces/{workspace}/styles`。  
+
+
+
+
+### 完整代码  
+
+```py 
+import requests
+import os 
+
+# GeoServer的URL和认证信息
+geoserver_url = "http://xxx.xxx.x.xxx:9090/geoServer"
+username = "admin"
+password = "xxx"
+
+# 数据存储配置
+workspace = "workspace"
+datastore = "datastore"
+
+
+sld_directory = "F:\sld\xxx"
+# 获取目录下所有SLD文件的文件名（不带扩展名）
+sld_files = [os.path.splitext(f)[0] for f in os.listdir(sld_directory) if f.endswith('.sld')]
+
+# geoserver style name：替换sld文件名咯
+def rename(name):
+    newName = name
+    newName = newName.replace("_", "xxx_")
+    return newName
+
+# 发布样式
+def publish_style(style_name, file_path):
+    style_url = f"{geoserver_url}/rest/workspaces/{workspace}/styles"
+    headers = {"Content-Type": "application/vnd.ogc.sld+xml; charset=utf-8"}
+    with open(file_path, 'r', encoding='utf-8') as file:
+        sld_content = file.read()
+    params = {"name": style_name.encode('utf-8'), "workspace": workspace.encode('utf-8')}
+    print(f"{style_name.encode('utf-8')}")
+    response = requests.post(style_url, auth=(username, password), headers=headers, params=params, data=sld_content.encode('utf-8'))
+    if response.status_code in [200, 201]:
+        print(f"Style {style_name} published successfully")
+    else:
+        print(f"Failed to publish style {style_name}: {response.text}")
+
+# 批量发布样式
+for sld_file in sld_files:
+    style_name = sld_file  # 去掉文件扩展名作为样式名
+    style_name = rename(style_name)
+    # print(style_name,sld_file)
+    file_path = os.path.join(sld_directory, f"{sld_file}.sld")
+    print(f"Publishing style: {style_name} from file: {file_path}")
+    publish_style(style_name, file_path)
+
+# 验证样式是否存在
+for sld_file in sld_files:
+    style_name = sld_file
+    style_name = rename(style_name)
+    style_url = f"{geoserver_url}/rest/workspaces/{workspace}/styles/{style_name}.json"
+    response = requests.get(style_url, auth=(username, password))
+    if response.status_code == 200:
+        print(f"Style {style_name} details:")
+        print(response.json())
+    else:
+        print(f"Failed to get style {style_name}: {response.text}")
+
+
+```
+
+:::tip
+1. sld文件名，geoserver style name 都用英文，懒得处理乱码 = =  
+
+:::
+
+### 参考  
+---
