@@ -1,0 +1,121 @@
+---
+sidebar_position: 2
+title: 加载瓦片地图
+description: 加载瓦片地图相关
+date: 2024-5-15
+
+tags: [arcgis for js3, gis]
+---
+
+
+## arcgis for js3x 加载天地图时, 如何添加请求头?
+
+### 思路
+
+#### 1
+
+google之后发现 `esriConfig.request.interceptors.push(interceptor);`。
+试了发现只有 **arcgis for js4**能用它。
+
+#### 2  
+google开始搜 **arcgis for js3**,发现 `esriRequest·setRequestPreCa11back`。
+试了发现根本不进这个方法里。
+
+#### 3 
+
+看看谁在调用天地图的请求。  
+![是谁](./img/arcgis/whoGetTdt.png)
+
+是源码中的 `_addImage` 中创建了 `img = new Image();img.src = h`, 所以是img标签去请求的天地图。  
+
+(h就是天地图的请求地址，这个地址会去我们封装的天地图类的`getTileUrl` 拿。)  
+
+
+我缓缓在google中打出了一行字 。。。  
+
+**img标签的src没法设置请求头吗？**  
+
+#### 4  
+
+那我请求下来天地图后，返回给源码中的 `_addImage` 的 `img.src`咯
+
+一顿 `xhr`后，发现异步才能拿到结果啊。但是 `_addImage`是同步的！
+
+我甚至开始想我应该怎么魔改一下源码的`_addImage`方法。  
+
+#### 5  
+
+突然灵光乍现  
+
+```js
+getTileUrl: function (level, row, col, element){}
+```
+
+这不是现成的 element吗?????
+
+
+
+### 代码
+```js 
+// old：直接把请求地址返回给源码咯
+getTileUrl: function (level, row, col, element) {
+    return  this._urlTemplate.replace('{z}', level).replace('{x}', col).replace('{y}', row);
+}
+// new：我自己写请求，最后异步拿到结果复制给element
+getTileUrl: function (level, row, col, element) {
+    const uu = this._urlTemplate.replace('{z}', level).replace('{x}', col).replace('{y}', row);
+      // 使用 XMLHttpRequest 进行自定义请求
+      var xhr = new XMLHttpRequest();
+      xhr.open('GET', uu, true);
+      xhr.responseType = 'blob';
+      xhr.setRequestHeader("aaa", "aaa");
+      
+      xhr.onload = () => {
+          if (xhr.status === 200) {
+              var reader = new FileReader();
+              reader.onloadend = () => {
+                  var base64data = reader.result;
+                  element.src = base64data
+              };
+              reader.readAsDataURL(xhr.response);
+          }
+      };
+
+      xhr.send();
+}
+
+```
+
+
+:::tip 知识点
+
+### 1. 官方文档中gettileurl并没有第四个参数, 但是源码里传了的。
+
+它是img标签。  
+
+![是谁](./img/arcgis/gettileurl.png)
+     
+
+:::
+
+### 参考
+[3的官方文档gettileurl](https://developers.arcgis.com/javascript/3/jsapi/tiledmapservicelayer-amd.html#gettileurl)
+---
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
