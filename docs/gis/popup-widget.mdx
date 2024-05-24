@@ -1,0 +1,60 @@
+---
+sidebar_position: 1
+title: popup widget
+description: 测量工具相关内容
+date: 2024-5-24
+
+tags: [arcgis for js4]
+---
+
+## 自定义类名? 
+
+### 需求  
+
+设置弹窗的高/宽  
+
+### 思路  
+
+1.
+
+```css
+.esri-popup__main-container {
+    width: 600px !important;
+    min-height: 400px !important;
+}
+
+```
+
+会污染全局。  
+
+2. 自定义类名 
+
+```md
+pop.container = div
+```
+
+
+### 实现  
+
+```js 
+const pop = new Popup()
+const containerEl = document.createElement('div')
+containerEl.className = 'xixi-popup'
+
+pop.container = containerEl
+
+```
+
+```css
+.xixi-popup .esri-popup__main-container {
+    width: 600px !important;
+    min-height: 400px !important;
+}
+
+```
+
+---
+
+---
+
+## 相关源码  
