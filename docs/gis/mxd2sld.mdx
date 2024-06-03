@@ -1,0 +1,25 @@
+
+思路1：
+.mxd  ->  .lyr -> qgis slyr(community) export .sld
+
+问题：
+mxd中的图层没有data source无法使用arccpy.saveToLayerFile_management Failed to execute (SaveToLayerFile).
+
+我为什么老抓这saveToLayerFile_management这个方法不放呢，我看了arcpy的layer类文档后，发现可以直接用layer.save()来保存lyr呀。
+
+
+参考：
+python2.x字符编码转码 https://www.cnblogs.com/QZrun220/p/13295041.html  
+
+layers = arcpy.mapping.ListLayers(mxd)，拿到数据源？  https://support.esri.com/zh-cn/knowledge-base/use-python-to-list-the-data-sources-of-all-layers-in-th-000011530  
+
+arcpy的layer类  https://desktop.arcgis.com/zh-cn/arcmap/latest/analyze/arcpy-mapping/layer-class.htm
+
+Save Layer File with Python   https://community.esri.com/t5/python-questions/save-layer-file-with-python/td-p/298685
+
+How to save all layers in a MXD with arcpy   https://gis.stackexchange.com/questions/78082/how-to-save-all-layers-in-a-mxd-with-arcpy  
+
+
+
+思路2：
+.mxd -> esri .style  -> qgis slyr2.0 -> .xml
