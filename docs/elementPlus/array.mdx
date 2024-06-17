@@ -1,0 +1,42 @@
+
+
+```js
+function abc () {
+  console.log('aha---------------1');
+  helper.initialNotes.forEach(async (note) => {
+    console.log('aha---------------2');
+    let noteObject = new Note(note)
+    await noteObject.save()
+    console.log('aha---------------3');
+  })
+  console.log('aha---------------4');
+}
+```
+为什么 执行顺序是1243 ?  
+ the await commands defined inside of the forEach loop are not in the beforeEach function, but in separate functions that beforeEach will not wait for.
+
+怎么修改呢? 
+方式1：
+```js
+// 按顺序
+async function abc(){
+  for (let note of helper.initialNotes) {
+    let noteObject = new Note(note)
+    await noteObject.save()
+  }
+}
+```
+方式2：
+```js
+// 不按顺序
+async function abc () {
+  const noteObjects = helper.initialNotes
+    .map(note => new Note(note))
+  const promiseArray = noteObjects.map(note => note.save())
+  await Promise.all(promiseArray)
+})
+```
+Promise.all()
+
+
+ 
