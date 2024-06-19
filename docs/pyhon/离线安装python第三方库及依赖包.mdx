@@ -1,0 +1,138 @@
+---
+sidebar_position: 1
+title: 离线安装python第三方库及依赖包
+description: 相关内容
+date: 2024-6-19
+
+tags: [python]
+---
+## 下载安装某一个包
+
+### 目标  
+
+以`pandas`为例 
+
+目标：
+离线环境python是3.9。  
+联网环境python是2.12。  
+联网环境准备离线环境需要的pandas及它的依赖包。
+ 
+
+### 知识点
+
+1. python的第三方库都下载在哪里?  
+
+***D:\Python\Python38\Lib\site-packages***  
+
+
+
+
+### 思路  
+
+#### 思路1  
+
+直接从site-packages复制出来?
+
+不行，因为包还有它的依赖包...
+
+#### 思路2  
+
+在联网下载包和依赖包  
+
+用 `requirements.txt`  
+
+
+### 步骤 1.联网下载 pandas和它的依赖包  
+
+1. ~~执行命令~~
+```md 
+pip download pandas -d ./pandas_package
+```
+
+2. 这里有一个问题? 
+
+如果你的python是3.12,那么通过上面命令下载下来的pandas和它的依赖包,可能是python312版本的pandas和它的依赖包。  
+
+3. 执行命令  
+```md 
+pip download pandas -d ./pandas_package39 --python-version 3.9 --only-binary=:all:
+
+安装后会放到./pandas_package39 文件夹中。
+--python-version 3.9：指定要安装的pandas版本。
+```
+
+4. 执行命令后成功  
+
+![pip download](.\img\离线安装第三方库\pip下载第三方库.png)  
+
+![pandas_package39文件夹](.\img\离线安装第三方库\pandas_package文件夹中内容.png)
+
+
+5. 进入 pandas_package39 文件夹，创建requirements.txt文件  
+
+将上面执行命令成功后的Save从下往上依次复制到requirements.txt文件中。
+
+![requirements](.\img\离线安装第三方库\requirements.png)  
+
+### 步骤 2. 测试离线安装 pandas  
+
+下载了python3.9.13 
+我用的是 vscode  
+
+1. 创建项目，设置虚拟环境，pandas_package39复制到项目中  
+
+![vscode创建py项目](.\img\离线安装第三方库\vscode创建py项目.png)  
+
+2. 有点问题  
+
+这里有点问题，我懒得改了，直接把pandas_package39文件夹里的东西都移到项目根目录就能解决。
+
+![离线环境安装pandas_2](.\img\离线安装第三方库\离线环境安装pandas_2.png)  
+
+3. 执行 requirements.txt安装  
+```py
+# 按照脚本内安装包的顺序安装库
+pip install -r requirements.txt的绝对路径
+```
+
+![执行requirements安装](.\img\离线安装第三方库\执行requirements安装.png)  
+
+4. 安装成功哈
+
+![安装成功](.\img\离线安装第三方库\安装成功.png)  
+
+5. 使用  
+
+![使用pandas](.\img\离线安装第三方库\使用pandas.png)  
+
+
+
+### 参考
+
+[如何离线安装python的库及依赖库](https://www.cnblogs.com/tynam/p/16526180.html)
+
+[离线安装python的库及依赖库](https://www.cnblogs.com/qishuaiRisen/p/17631260.html)
+
+[安装requirements.txt文件中的依赖包](https://blog.csdn.net/qq_34197944/article/details/104925244)
+
+---
+
+## TODO: 如果想将一个项目的包下载下来，放到离线环境中跑 
+
+我没试这种方式, 但是基本思路和上面差不多，还是用到了requirmeents.txt。
+
+### 思路  
+
+导出当前项目的虚拟环境中安装的依赖。
+
+#### 步骤 
+
+```py 
+pip freeze &gt; requirements.txt
+```
+
+
+### 参考
+
+[python requirements.txt 生成与安装 ](https://www.cnblogs.com/dy99/p/15947195.html)
+[如何创建 requirements.txt 文件](https://www.freecodecamp.org/chinese/news/python-requirementstxt-explained/)
