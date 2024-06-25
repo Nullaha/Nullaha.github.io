@@ -1,10 +1,10 @@
 ---
 sidebar_position: 2
 title: geoserver发布图层服务
-description: 使用qgis将gdb数据导入到postgreSQL中
+description: geoserver发布图层服务
 date: 2024-5-15
 
-tags: [geoserver, python, gis,qgis, postgresql]
+tags: [geoserver, python, gis,qgis, postgresql,wmts]
 ---
 
 
@@ -37,7 +37,7 @@ import json
 
 # GeoServer的URL和认证信息
 
-geoserver_url = "http://xxx.xxx.x.xxx:9090/geoServer"
+geoserver_url = "http://xxx.xxx.x.xxx:xxxx/geoServer"
 username = "admin"
 password = "xxx"
 
@@ -174,3 +174,33 @@ for layerInfo in layers:
 
 
 
+## geoserver 发布wmts服务?  
+
+按照正常流程发布一个图层后。  
+
+在左侧栏的`瓦片图层`下可以找到该图层。  
+![geoserver-瓦片图层目录](./img/geoserver/瓦片图层.png)  
+
+你可以预览一下  
+![geoserver-瓦片图层预览](./img/geoserver/瓦片图层预览.png)  
+
+![geoserver-瓦片图层预览2](./img/geoserver/预览2.png)  
+
+***注意：此时看到的瓦片服务是geowebcache动态生成的。***  
+就这样用就行。不需要切图到本地。
+
+### 给图层添加切片方案 gridsets  
+
+geoserver -> 图层 -> 编辑图层 -> 切片缓存中，可以为该图层设置切片方案gridsets 
+
+### 设置切片方案  
+
+![geoserver-瓦片方案目录](./img/geoserver/切片方案.png)  
+
+在这里可以创建一个新的gridset。（比如4490）  
+
+
+
+
+
+[参考：](https://blog.csdn.net/qq_45956730/article/details/129792761)
