@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunknullaha_github_io=self.webpackChunknullaha_github_io||[]).push([[7375],{8789:e=>{e.exports=JSON.parse('{"categoryGeneratedIndex":{"title":"js","slug":"/category/js","permalink":"/docs/category/js","sidebar":"frontendSidebar","navigation":{"next":{"title":"array","permalink":"/docs/frontend/js/array"}}}}')}}]);
