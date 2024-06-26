@@ -24,7 +24,7 @@ google开始搜 **arcgis for js3**,发现 `esriRequest·setRequestPreCa11back`�
 #### 3 
 
 看看谁在调用天地图的请求。  
-![是谁](./img/arcgis/whoGetTdt.png)
+![是谁](./img/tdt/whoGetTdt.png)
 
 是源码中的 `_addImage` 中创建了 `img = new Image();img.src = h`, 所以是img标签去请求的天地图。  
 
@@ -93,7 +93,7 @@ getTileUrl: function (level, row, col, element) {
 
 它是img标签。  
 
-![是谁](./img/arcgis/gettileurl.png)
+![是谁](./img/tdt/gettileurl.png)
      
 
 :::
@@ -145,8 +145,8 @@ resolution
 
 👇可以看出来天地图的lods和4490的lods差一级     
 
-![tdt lods](./img/geoserver/加载wmts/lodstdt.png)
-![4490 lods](./img/geoserver/加载wmts/lods4490.png)
+![tdt lods](./img/tdt/lodstdt.png)
+![4490 lods](./img/tdt/lods4490.png)
 
 
 所以tdtdelods可以照着geosever上4490的写咯。只要差一级写就行了。  

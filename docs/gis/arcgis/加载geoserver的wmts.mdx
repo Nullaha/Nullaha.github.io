@@ -10,7 +10,7 @@ tags: [arcgis for js4, gis, wmts, geoserver]
 
 ## 一、怎么确定我在geoserver上发布的服务是wmts呢?  
 
-[geoserver发布图层服务](./geoserver发布图层服务.mdx)
+[geoserver发布图层服务](../geoserver/geoserver发布图层服务)
 
 
 
@@ -30,7 +30,7 @@ http://xxx.xxx.x.xxx:xxxx/geoServer/gwc/service/wmts?REQUEST=GetCapabilities
 
 搜索你想要的那个图层，比如aha  
 
-![urlTemplate](./img//geoserver/加载wmts/urlTemplate.png)  
+![urlTemplate](./img/加载wmts/urlTemplate.png)  
 
 
 ```md 
@@ -39,7 +39,7 @@ http://xxx.xxx.x.xxx:xxxx/geoServer/gwc/service/wmts/rest/testt:aha_test222/{sty
 
 - `{style}` 去哪里找呢? 
 
-![style](./img//geoserver/加载wmts/style.png)  
+![style](./img/加载wmts/style.png)  
 
 ```md 
 http://xxx.xxx.x.xxx:xxxx/geoServer/gwc/service/wmts/rest/testt:aha_test222/{style}/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}?format=image/png
@@ -50,7 +50,7 @@ http://xxx.xxx.x.xxx:xxxx/geoServer/gwc/service/wmts/rest/testt:aha_test222/{sty
 - `{TileMatrixSet}` 去哪里找呢? 
 tilematrixset
 
-![tilematrixset](./img//geoserver/加载wmts/tilematrixset.png)  
+![tilematrixset](./img/加载wmts/tilematrixset.png)  
 
 ```md 
 http://xxx.xxx.x.xxx:xxxx/geoServer/gwc/service/wmts/rest/testt:aha_test222/aaaaaaa_test/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}?format=image/png
@@ -74,15 +74,15 @@ http://xxx.xxx.x.xxx:xxxx/geoServer/gwc/service/wmts/rest/testt:aha_test222/aaaa
 1. 在geoserver -> 瓦片图层 中预览发布的图层  
 
 
-![瓦片图层预览](./img//geoserver/加载wmts/瓦片图层预览.png)  
+![瓦片图层预览](./img/加载wmts/瓦片图层预览.png)  
 
 2. 打开 控制台 看它的请求   
 
-![瓦片图层的请求](./img//geoserver/加载wmts/wmts请求.png)  
+![瓦片图层的请求](./img/加载wmts/wmts请求.png)  
 
 3. 打开 控制台 看它的请求   
 
-![瓦片图层的请求](./img//geoserver/加载wmts/参数解析.png)  
+![瓦片图层的请求](./img/加载wmts/参数解析.png)  
 
 4. 最后得到：
 
@@ -124,7 +124,7 @@ new WMTSLayer({
 ```
 
 
-![报错_Unable_to_load_tile](./img//geoserver/加载wmts/报错_Unable_to_load_tile.png)  
+![报错_Unable_to_load_tile](./img/加载wmts/报错_Unable_to_load_tile.png)  
 
 无解。
 
@@ -160,7 +160,7 @@ new WebTileLayer({
 
 #### tileOutOfRange报错  
 
-![报错_tileOutOfRange](./img//geoserver/加载wmts/报错_tileOutOfRange.png)  
+![报错_tileOutOfRange](./img/加载wmts/报错_tileOutOfRange.png)  
 
 1. 出现的原因1:查看范围超出影像数据的范围?  
 

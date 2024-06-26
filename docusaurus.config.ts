@@ -60,11 +60,33 @@ const config: Config = {
     image: 'img/docusaurus-social-card.jpg',
     navbar: {
       title: 'Aha',
+      hideOnScroll: true, // 鼠标上下滚动隐藏头部导航栏
       // logo: {
       //   alt: 'My Site Logo',
       //   src: 'img/logo.svg',
       // },
       items: [
+        // 前端笔记
+        {
+          type: 'docSidebar',
+          sidebarId: 'frontendSidebar',
+          position: 'left',
+          label: 'Frontend',
+        },
+        // gis笔记
+        {
+          type: 'docSidebar',
+          sidebarId: 'gisSidebar',
+          position: 'left',
+          label: 'GIS',
+        },
+        // python笔记
+        {
+          type: 'docSidebar',
+          sidebarId: 'pythonSidebar',
+          position: 'left',
+          label: 'Python',
+        },
         {
           type: 'docSidebar',
           sidebarId: 'tutorialSidebar',
@@ -72,16 +94,18 @@ const config: Config = {
           label: 'Tutorial',
         },
         {to: '/blog', label: 'Blog', position: 'left'},
+
         {
-          href: 'https://github.com/facebook/docusaurus',
+          href: 'https://github.com/Nullaha',
           label: 'GitHub',
           position: 'right',
         },
+
       ],
     },
    
     prism: {
-      theme: prismThemes.github,
+      theme: prismThemes.github, 
       darkTheme: prismThemes.dracula,
     },
   } satisfies Preset.ThemeConfig,
