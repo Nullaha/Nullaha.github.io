@@ -101,10 +101,14 @@ const config: Config = {
           label: 'GitHub',
           position: 'right',
         },
+        // {
+        //   type: 'search',
+        //   position: 'right',
+        // },
+        
 
       ],
     },
-   
     prism: {
       theme: prismThemes.github, 
       darkTheme: prismThemes.dracula,
