@@ -6,7 +6,7 @@ const config: Config = {
   title: 'Aha',
   tagline: 'Dinosaurs are cool',
   // favicon: 'img/favicon.ico',
-  staticDirectories:['sourceCode','static'], //静态资源目录
+  // staticDirectories:['sourceCode','static'], //静态资源目录
 
   // Set the production url of your site here
   // url: 'https://your-docusaurus-site.example.com',
