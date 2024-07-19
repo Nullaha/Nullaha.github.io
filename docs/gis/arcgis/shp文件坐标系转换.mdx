@@ -1,0 +1,47 @@
+---
+sidebar_position: 1
+title: shp文件坐标系转换
+description: shp文件坐标系转换
+date: 2024-7-19
+
+tags: [arcmap]
+---
+
+## 既有地理坐标系也有投影坐标系，去掉投影坐标系？  
+
+ArcToolbox -> Data Management Tools -> Projections and Transformations -> Project
+
+![投影坐标](./img/arcmap/投影坐标.png)
+![地理坐标](./img/arcmap/地理坐标.png)
+
+
+![投影操作](./img/arcmap/投影处理.png)
+
+![结果](./img/arcmap/只有地理坐标了.png)
+
+## 两个shp地理坐标系是相同的，但是命名不同？  
+
+ArcToolbox -> Data Management Tools -> Projections and Transformations -> Define Projection 
+
+
+## 地理坐标系转投影坐标系？  
+
+[参考：Arcgis 地理坐标系转投影坐标系（WGS84转CGCS2000）](https://blog.csdn.net/qq_43542987/article/details/119933177)
+
+
+需要有一个两个坐标系的变换（要么用arcmap自带的，要么自己创建一个）。  
+
+ArcToolbox -> Data Management Tools -> Projections and Transformations -> Create Custom Geographic Transformation  
+
+![创建自定义坐标转换](./img/arcmap/创建自定义坐标转换.png)  
+
+
+ArcToolbox -> Data Management Tools -> Projections and Transformations -> Define Projection  
+
+![转换坐标](./img/arcmap/转换坐标.png)   
+
+![转换成功](./img/arcmap/转换成功.png)   
+
+
+
+---
