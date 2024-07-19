@@ -1,0 +1,43 @@
+---
+sidebar_position: 1
+title: arcgis影像切片(不需要发布服务)
+description: arcgis 影像切片(不需要发布服务)
+date: 2024-7-19
+
+tags: [arcmap, tile]
+---
+
+## 需求：
+
+用arcgis将tif影像切片，然后在geoserver中发布wmts。  
+
+## 步骤：  
+
+[参考：arcgis 影像切片，不需要发布服务（生成png格式或者.bundle格式都可以）、可不是生成切片包哦](https://blog.csdn.net/yangniceyangyang/article/details/104254494)
+
+### 1 arcmap加载影像图
+
+坐标系什么的都设置好。
+
+### 2 生成切片方案  
+
+ArcToolbox -> Data Management Tools -> Tile Cache -> Generate Tile Cache Tiling Scheme  
+
+![Generate Tile Cache Tiling Scheme1](./img/arcmap切片/生成切片方案1.png)  
+![Generate Tile Cache Tiling Scheme2](./img/arcmap切片/生成切片方案2.png)  
+
+
+### 3 开始切片
+
+ArcToolbox -> Data Management Tools -> Tile Cache -> Manage Tile Cache  
+
+![Manage Tile Cache](./img/arcmap切片/开始切片.png)  
+
+
+### 4 结果
+
+![结果](./img/arcmap切片/结果.png)  
+
+
+
+---
