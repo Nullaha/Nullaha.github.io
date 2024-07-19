@@ -1,0 +1,41 @@
+---
+sidebar_position: 1
+title: el-upload
+description: 相关内容
+date: 2024-5-11
+
+tags: [elementPlus, upload]
+---
+
+## 点击按钮，先判断，再决定是否弹出文档选择框?   
+
+[参考: upload 上传文件之前判断，先判断再弹出文档选择框](https://blog.csdn.net/weixin_43908123/article/details/124858555)
+
+```vue 
+<el-upload ref="uploadRef" class="upload-btn" :limit="1" :on-exceed="handleExceed" :on-change="handleChange" :auto-upload="false" :show-file-list="false">
+    <template #trigger>
+        <el-button type="primary" @click="handleButtonClick">导入文件</el-button>
+    </template>
+</el-upload>
+<script setup>
+
+const uploadRef = ref<UploadInstance>();
+const currentDirId = ref('');
+const handleButtonClick = (e) => {
+    if (!dataStore.currentDirId) {
+        ElMessage.info('请先选择左侧dirId！');
+        e.stopPropagation(); // 会阻止事件冒泡d
+        return;
+    }
+    uploadRef.value!.clearFiles();
+};
+</script>
+```
+
+
+
+
+
+
+---
+
