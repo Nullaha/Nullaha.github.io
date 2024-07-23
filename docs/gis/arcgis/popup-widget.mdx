@@ -34,7 +34,7 @@ pop.container = div
 ```
 
 
-### 实现  
+### ~~实现1~~  
 
 ```js 
 const pop = new Popup()
@@ -53,8 +53,82 @@ pop.container = containerEl
 
 ```
 
----
+### 实现2  
+
+实现1 会有bug。hhhhh  
+
+如果折叠弹窗，因为设置了min-height: 400px; 会导致弹窗无法折叠.  
+
+应该用max-height  
+
+```css
+.xixi-popup .esri-popup__main-container {
+    width: 600px !important;
+    max-height: 400px !important;
+}
+
+```
 
 ---
 
+## wait cursor  
+
+### 需求：  
+
+点击图斑， 弹出弹窗。 中间等待的时间希望有一个loading。  
+
+[参考：官方论坛 wait cursor](https://community.esri.com/t5/arcgis-javascript-maps-sdk-questions/wait-cursor/m-p/276001)  
+
+### 实现：  
+
+```js 
+import Spinner from '@arcgis/core/widgets/Spinner.js';
+this.spinner = new Spinner({
+    view,
+});
+view.ui.add(this.spinner);
+
+async query(qGeom, mapPoint) {
+    this._showSpinner(mapPoint);
+}
+this.watchHandler = this.view.popup.watch('visible', (newValue, oldValue, name) => {
+    if (!newValue) {
+        // ...
+    }
+    this._hideSpinner();
+});
+/**
+ * helper
+ */
+_showSpinner(location) {
+    this.spinner.show({
+        location: location,
+    });
+}
+_hideSpinner() {
+    this.spinner.hide();
+}
+```
+### 注意  
+
+如果loading图斑不显示，控制台报错404找不到。  
+
+把base/theme/light/main.css本地化。  
+[参考：arcigs/core 4 本地化](https://nullaha.github.io//docs/gis/arcgis/arcgiscore%E6%9C%AC%E5%9C%B0%E5%8C%96)
+
+---
+
+## 修改样式  
+TODO: 
+### 需求：  
+
+我不想要它自带的样式，我要修改！！  
+
+### 思路：  
+
+具难改！  
+
+
+
+---
 ## 相关源码  
