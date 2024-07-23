@@ -3,7 +3,7 @@ import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import Layout from '@theme/Layout';
 
 // 
-import { TODO_CONTENT } from './content';
+import { TODO_CONTENT } from './content.ts';
 
 
 
