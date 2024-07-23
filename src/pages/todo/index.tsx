@@ -2,13 +2,16 @@ import clsx from 'clsx';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import Layout from '@theme/Layout';
 import { Tooltip } from 'antd';
+import TodoGrid from './comp/Grid';
 // 
 // import { TODO_CONTENT } from './content';
-import { TODO_CONTENT } from '/todoContent.ts';
+import { TODO_CONTENT, groupByYearAndMonth,ITodoItem } from '/todoContent.ts';
 
 
 export default function Todo(): JSX.Element {
   const {siteConfig} = useDocusaurusContext();
+  const groupedTodos = groupByYearAndMonth(TODO_CONTENT)
+
   return (
     <Layout
       title={`Hello from ${siteConfig.title}`}
@@ -16,7 +19,7 @@ export default function Todo(): JSX.Element {
       {/* <HomepageHeader /> */}
       {/* <main>
       </main> */}
-      <ul>
+      {/* <ul>
         {TODO_CONTENT.map((item,index) => {
           return (
             <li key={index} >
@@ -41,7 +44,9 @@ export default function Todo(): JSX.Element {
             </li>
           )
         })}
-      </ul>
+      </ul> */}
+      <TodoGrid groupedTodos={groupedTodos} />
+      
     </Layout>
   );
 }
