@@ -77,6 +77,10 @@ pop.container = containerEl
 
 点击图斑， 弹出弹窗。 中间等待的时间希望有一个loading。  
 
+### 思路：  
+
+用 arcgis/core 里的Spinner  
+
 [参考：官方论坛 wait cursor](https://community.esri.com/t5/arcgis-javascript-maps-sdk-questions/wait-cursor/m-p/276001)  
 
 ### 实现：  
@@ -128,7 +132,148 @@ TODO:
 
 具难改！  
 
+---
 
+## 拖拽弹窗  
+
+### 思路  
+
+翻了翻互联网 3.x 可以通过dojo/Movable来实现拖拽功能  
+[参考： 例子](https://community.esri.com/t5/arcgis-javascript-maps-sdk-questions/is-it-possible-to-make-the-infowindow-pop-up/m-p/253400#M23440)
+
+4.x 已经找不到这个类了  
+
+网上看到的方法都是用interact库的  
+[参考：例子1](https://gavinr.com/draggable-popup-arcgis-javascript/)
+
+[参考：interactjs库](https://interactjs.io/docs/draggable/)
+[参考：interactjs库 github](https://github.com/taye/interact.js)
+[参考：interactjs库 destroy api](https://github.com/taye/interact.js/blob/main/docs/faq.md)
+
+
+### 实现  
+
+vue + vite + arcgis/core 4.x  
+
+安装 `npm install interactjs`  
+
+```js 
+import { createVNode, render } from 'vue';
+import PopupContentConstructor from './popupTemplate.vue';
+import Popup from '@arcgis/core/widgets/Popup.js';
+import * as reactiveUtils from '@arcgis/core/core/reactiveUtils.js';
+import interact from 'interactjs';
+
+class Test{
+    constructor(mapView){
+        this.view = mapView;
+        this.popupContainer = document.createElement('div');
+        this.popupClassName = 'aha-esri-popup';
+        this.popupTargetStr = '.aha-esri-popup.esri-component';
+        this.popupTitle = `
+            <div class="custom-esri-popup-title">
+                <span>属性信息</span>
+            </div>
+        `;
+        this.watchHandler = null;
+    }
+}
+
+initInstance(props) {
+    // container.style.height = '500px';
+    const vnode = createVNode(PopupContentConstructor, {
+        ...props,
+        // onDestroy: () => {
+        //     render(null, this.popupContainer);
+        // },
+    });
+    render(vnode, this.popupContainer);
+    return this.popupContainer;
+}
+
+showPopup(payload, mapPoint) {
+    const popup = new Popup();
+    const container = document.createElement('div');
+    container.className = this.popupClassName;
+
+    popup.container = container;
+    popup.location = mapPoint;
+    popup.title = this.popupTitle;
+
+    this.view.popup = popup;
+    popup.content = this.initInstance({
+        payload,
+        view2: this.view,
+    });
+    // this.view.popup.open();
+    this.view.popup.dockEnabled = true;
+    this.view.popup.dockOptions = {
+        breakpoint: false,
+        position: 'top-right',
+    };
+    // this.view.popup.dockOptions = null;
+    this.view.popup.dockOptions.buttonEnabled = false;
+    this.view.popup.viewModel.includeDefaultActions = false;
+
+    this.watchHandler = this.view.popup.watch('visible', (newValue, oldValue, name) => {
+        if (!newValue) {
+            this.hlLayer?.removeAll();
+            this.watchHandler?.remove();
+            this.watchHandler = null;
+            render(null, this.popupContainer);
+            this.view.popup.content = null;
+        }
+        // this._hideSpinner();
+    });
+    this.view.popup.visible = true;
+    setTimeout(() => {
+        popup.reposition();
+    }, 10);
+
+    //
+    reactiveUtils
+        .whenOnce(() => this.view.popup?.visible)
+        .then(() => {
+            // draggle
+            this.setupDraggle();
+
+            // style
+            // ...
+        });
+}
+
+// popup draggle
+destroyDraggle(target) {
+    interact(target)?.unset();
+}
+setupDraggle() {
+    const targetStr = this.popupTargetStr;
+    this.destroyDraggle(targetStr);
+    // setup the new listener:
+    const position = { x: 0, y: 0 };
+    interact(targetStr).draggable({
+        listeners: {
+            // start(event) {
+            //   console.log(event.type, event.target);
+            // },
+            move(event) {
+                // console.log(event.type, event.target);
+
+                // hide the popup pointer:
+                // const elements = document.querySelectorAll(".esri-popup__pointer");
+                // elements[0].style.display = "none";
+
+                // calculate the position and update:
+                position.x += event.dx;
+                position.y += event.dy;
+
+                event.target.style.transform = `translate(${position.x}px, ${position.y}px)`;
+            },
+        },
+    });
+}
+
+```
 
 ---
 ## 相关源码  

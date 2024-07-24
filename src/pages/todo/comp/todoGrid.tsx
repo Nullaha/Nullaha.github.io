@@ -2,6 +2,44 @@ import { Card, Col, Row, Tooltip } from "antd";
 import { ITodoItem, IGroupedTodos } from "/todoContent.ts";
 import styles from "./todoGrid.module.css";
 
+const TodoItem = ({item}) => {
+
+  return (
+    <li>
+      {item.state === "done" ? (
+        <>
+          <Tooltip
+            placement="bottom"
+            title={"完成时间: " + item.doneTime}
+          >
+            ✔
+          </Tooltip>
+          <Tooltip
+            placement="right"
+            title={"todo时间: " + item.time}
+          >
+            <del>{item.title}</del>
+          </Tooltip>
+        </>
+      ) : (
+        <Tooltip
+          placement="right"
+          title={"todo时间: " + item.time}
+        >
+          {item.title}
+        </Tooltip>
+      )}
+      {item.children && item.children.length > 0 && (
+        <ol>
+          {item.children.map((child, index) => (
+            <TodoItem key={index} item={child} />
+          ))}
+        </ol>
+      )}
+    </li>
+  )
+}
+
 const TodoGrid = ({ groupedTodos }) => {
   const colSpan = 24 / 3;
   return (
@@ -28,7 +66,7 @@ const TodoGrid = ({ groupedTodos }) => {
     <>
       {Object.keys(groupedTodos).map((year) => (
         <div key={year} className={styles.yearBox}>
-          <h1>{year}</h1>
+          {/* <h1>{year}</h1> */}
           {
             <Row key={year} gutter={[16, 16]}>
               {Object.keys(groupedTodos[year]).map((month) => (
@@ -43,31 +81,8 @@ const TodoGrid = ({ groupedTodos }) => {
                   >
                     <ol>
                       {groupedTodos[year][month].map((item, index) => (
-                        <li key={index}>
-                          {item.state === "done" ? (
-                            <>
-                              <Tooltip
-                                placement="bottom"
-                                title={"完成时间: " + item.doneTime}
-                              >
-                                ✔
-                              </Tooltip>
-                              <Tooltip
-                                placement="right"
-                                title={"todo时间: " + item.time}
-                              >
-                                <del>{item.title}</del>
-                              </Tooltip>
-                            </>
-                          ) : (
-                            <Tooltip
-                              placement="right"
-                              title={"todo时间: " + item.time}
-                            >
-                              {item.title}
-                            </Tooltip>
-                          )}
-                        </li>
+                        <TodoItem key={index} item={item} />
+                        // <li key={index}>{item.title}</li>
                       ))}
                     </ol>
                   </Card>

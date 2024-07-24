@@ -7,6 +7,7 @@ export interface ITodoItem {
   refer?: any[];
   state?: 'done';
   doneTime?: string;
+  children?: ITodoItem[];
 }
 export interface IGroupedTodos {
   [year: string]: {
@@ -37,6 +38,7 @@ export const TODO_CONTENT: ITodoItem[] = [
   {
     title: 'vue vite public 资源的使用(img,css,js,json...)',
     time:'2024-7-22',
+    // https://blog.csdn.net/wallace_yang/article/details/128471176
   },
   {
     title: 'arcgis切片，通过nginx转发，项目里访问（要改WebTileLayer源码）',
@@ -57,6 +59,27 @@ export const TODO_CONTENT: ITodoItem[] = [
   {
     title: 'arcgis/core popup若干问题',
     time:'2024-7-24',
+    children: [
+      {
+        title: 'arcgis/core popup moveable popups',
+        time:'2024-7-24',
+        state: 'done',
+        doneTime: '2024-7-24'
+        // https://community.esri.com/t5/arcgis-javascript-maps-sdk-questions/is-it-possible-to-make-the-infowindow-pop-up/m-p/253400#M23440
+        //3.x https://jsfiddle.net/goldenlimit/gaz8ao8n/
+      },
+      {
+        title: 'arcgis/core popup collapse',
+        time:'2024-7-24',
+        //https://community.esri.com/t5/arcgis-javascript-maps-sdk-questions/popup-functionality-in-mobile-view/td-p/562752
+      },
+    ]
+  },
+  {
+    title: 'vue外部修改#shadow-root (open)的样式',
+    time:'2024-7-24',
+    // https://blog.csdn.net/qq_44376306/article/details/128552574
+    // https://juejin.cn/post/7157010755814948900#heading-1
   },
   //  -----------------------------
 ];
