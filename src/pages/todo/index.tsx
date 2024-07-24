@@ -1,10 +1,11 @@
 import clsx from 'clsx';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import Layout from '@theme/Layout';
-import { Tooltip } from 'antd';
-import TodoGrid from './comp/Grid';
+import TodoGrid from './comp/todoGrid';
+
+import styles from './index.module.css';
 // 
-// import { TODO_CONTENT } from './content';
+
 import { TODO_CONTENT, groupByYearAndMonth,ITodoItem } from '/todoContent.ts';
 
 
@@ -19,33 +20,9 @@ export default function Todo(): JSX.Element {
       {/* <HomepageHeader /> */}
       {/* <main>
       </main> */}
-      {/* <ul>
-        {TODO_CONTENT.map((item,index) => {
-          return (
-            <li key={index} >
-              {
-                item.state === 'done' 
-                  ? (
-                    <>
-                      <Tooltip placement='bottom' title={'完成时间: ' + item.doneTime}>
-                        ✔
-                      </Tooltip>
-                      <Tooltip placement='right' title={'todo时间: ' + item.time}>
-                        <del>{item.title}</del>
-                      </Tooltip>
-                    </>
-                  ) 
-                  : (
-                    <Tooltip placement='right' title={'todo时间: ' + item.time}>
-                      {item.title}
-                    </Tooltip>
-                  )
-              }
-            </li>
-          )
-        })}
-      </ul> */}
-      <TodoGrid groupedTodos={groupedTodos} />
+      <div className={styles.todoBox}>
+        <TodoGrid groupedTodos={groupedTodos} />
+      </div>
       
     </Layout>
   );
