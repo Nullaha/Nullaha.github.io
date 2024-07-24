@@ -61,7 +61,7 @@ export const TODO_CONTENT: ITodoItem[] = [
     time:'2024-7-24',
     children: [
       {
-        title: 'arcgis/core popup moveable popups',
+        title: 'moveable popups',
         time:'2024-7-24',
         state: 'done',
         doneTime: '2024-7-24'
@@ -69,9 +69,18 @@ export const TODO_CONTENT: ITodoItem[] = [
         //3.x https://jsfiddle.net/goldenlimit/gaz8ao8n/
       },
       {
-        title: 'arcgis/core popup collapse',
+        title: 'popup collapse',
         time:'2024-7-24',
         //https://community.esri.com/t5/arcgis-javascript-maps-sdk-questions/popup-functionality-in-mobile-view/td-p/562752
+      },
+      {
+        title: 'popup style',
+        time:'2024-7-24',
+        // https://community.esri.com/t5/arcgis-javascript-maps-sdk-questions/4-28-popup-styling-not-working/m-p/1362431
+        // visibleElements
+        // https://community.esri.com/t5/arcgis-javascript-maps-sdk-questions/popup-header-can-t-be-removed-in-arcgis-javascript/m-p/1351058/highlight/true#M82813
+        // https://community.esri.com/t5/arcgis-javascript-maps-sdk-questions/popup-button-focus-color/m-p/1379690
+        // change popup size 
       },
     ]
   },
