@@ -90,6 +90,11 @@ export const TODO_CONTENT: ITodoItem[] = [
     // https://blog.csdn.net/qq_44376306/article/details/128552574
     // https://juejin.cn/post/7157010755814948900#heading-1
   },
+  {
+    title: 'arcgis/core 本地化配置时，要加项目的BASE_URL',
+    time:'2024-7-25',
+    // 不能单纯的 esriConfig.xxx= '/public/arcgis-assets'
+  },
   //  -----------------------------
 ];
 
