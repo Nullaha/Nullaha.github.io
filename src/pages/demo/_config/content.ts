@@ -8,6 +8,7 @@ export interface IDemoItem {
   state?: 'done';
   doneTime?: string;
   link?: string;
+  description?: string;
   // children?: IDemoItem[];
 }
 export interface IGroupedDemos {
@@ -20,9 +21,10 @@ const DEMO_LINK_BASE = 'https://nullaha.github.io/deploy-repo/'
 export const GROUPED_DEMOS: IGroupedDemos = {
   gis: [
     {
-      title: 'arcgis4-vue3',
+      title: 'arcgis4-vue3-demo',
       time:'2024-7-25',
-      link: `${DEMO_LINK_BASE}arcgis-demo`
+      link: `${DEMO_LINK_BASE}arcgis-demo`,
+      description: ''
       
     },
   ],
