@@ -1,43 +1,7 @@
 import { Card, Col, Row, Tooltip } from "antd";
 import styles from "./demoGrid.module.css";
+import Link from '@docusaurus/Link'
 
-const DemoItem = ({item}) => {
-
-  return (
-    <li>
-      {item.state === "done" ? (
-        <>
-          <Tooltip
-            placement="bottom"
-            title={"完成时间: " + item.doneTime}
-          >
-            ✔
-          </Tooltip>
-          <Tooltip
-            placement="right"
-            title={"todo时间: " + item.time}
-          >
-            <del>{item.title}</del>
-          </Tooltip>
-        </>
-      ) : (
-        <Tooltip
-          placement="right"
-          title={"todo时间: " + item.time}
-        >
-          {item.title}
-        </Tooltip>
-      )}
-      {item.children && item.children.length > 0 && (
-        <ol>
-          {item.children.map((child, index) => (
-            <TodoItem key={index} item={child} />
-          ))}
-        </ol>
-      )}
-    </li>
-  )
-}
 
 const DemoGrid = ({ name, demos }) => {
   const colSpan = 24 / 3;
@@ -77,7 +41,8 @@ const DemoGrid = ({ name, demos }) => {
                     classNames={{body: styles.demoCardBody,header:styles.demoCardHeader}} //card的body的样式
                     // styles={{ body: { height: "100%", overflowY: "auto" } }} // 也可以这样写card的body的样式
                   >
-                    {item.title}
+                    {/* {item.title} */}
+                    <Link to={item.link}>{item.title}</Link>
                   </Card>
                 </Col>
               ))}
