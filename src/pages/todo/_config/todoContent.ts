@@ -95,6 +95,16 @@ export const TODO_CONTENT: ITodoItem[] = [
     time:'2024-7-25',
     // 不能单纯的 esriConfig.xxx= '/public/arcgis-assets'
   },
+  {
+    title: 'arcgis4-vue3-demo',
+    time:'2024-7-25',
+    children: [
+      {
+        title: 'esri 本地化，配置ISOFFLINE',
+        time: '2024-7-25'
+      }
+    ]
+  },
   //  -----------------------------
 ];
 
