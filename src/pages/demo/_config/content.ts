@@ -15,8 +15,8 @@ export interface IGroupedDemos {
 }
 
 // 所有todo
-// const DEMO_LINK_BASE = 'https://nullaha.github.io/deploy-repo/'
-const DEMO_LINK_BASE = '/deploy-repo/'
+const DEMO_LINK_BASE = 'https://nullaha.github.io/deploy-repo/'
+// const DEMO_LINK_BASE = '/deploy-repo/'
 export const GROUPED_DEMOS: IGroupedDemos = {
   gis: [
     {
