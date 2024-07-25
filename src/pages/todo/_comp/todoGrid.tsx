@@ -76,7 +76,7 @@ const TodoGrid = ({ groupedTodos }) => {
                     bordered={true}
                     className={styles.todoCard} // card的样式
                     style={{ height: 400, overflow: "hidden" }} //也可以这样写card的样式
-                    classNames={{body: styles.todoCardBody}} //card的body的样式
+                    classNames={{body: styles.todoCardBody,header:styles.todoCardHeader}} //card的body的样式
                     // styles={{ body: { height: "100%", overflowY: "auto" } }} // 也可以这样写card的body的样式
                   >
                     <ol>
