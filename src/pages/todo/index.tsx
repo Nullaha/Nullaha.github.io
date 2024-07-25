@@ -1,12 +1,12 @@
 import clsx from 'clsx';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import Layout from '@theme/Layout';
-import TodoGrid from './comp/todoGrid';
+import TodoGrid from './_comp/todoGrid';
 
 import styles from './index.module.css';
 // 
 
-import { TODO_CONTENT, groupByYearAndMonth,ITodoItem } from '/todoContent.ts';
+import { TODO_CONTENT, groupByYearAndMonth,ITodoItem } from './_config/todoContent';
 
 
 export default function Todo(): JSX.Element {

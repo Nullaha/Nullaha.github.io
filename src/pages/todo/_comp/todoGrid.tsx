@@ -1,5 +1,5 @@
 import { Card, Col, Row, Tooltip } from "antd";
-import { ITodoItem, IGroupedTodos } from "/todoContent.ts";
+import { ITodoItem, IGroupedTodos } from "../_config/todoContent";
 import styles from "./todoGrid.module.css";
 
 const TodoItem = ({item}) => {
