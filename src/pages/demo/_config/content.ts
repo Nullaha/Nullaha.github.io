@@ -8,6 +8,7 @@ export interface IDemoItem {
   state?: 'done';
   doneTime?: string;
   link?: string;
+  description?: string;
   // children?: IDemoItem[];
 }
 export interface IGroupedDemos {
@@ -15,16 +16,16 @@ export interface IGroupedDemos {
 }
 
 // 所有todo
+const DEMO_LINK_BASE = 'https://nullaha.github.io/deploy-repo/'
+// const DEMO_LINK_BASE = '/deploy-repo/'
 export const GROUPED_DEMOS: IGroupedDemos = {
   gis: [
     {
-      title: 'test',
-      time:'2024-7-21',
-      refer: [
-        'ArcGISServer/GeoServer切片服务规则：https://blog.csdn.net/mxy2572185/article/details/86691005',
-        '瓦片地图原理：https://segmentfault.com/a/1190000011276788',
-        '瓦片(Tile)地图原理: https://xcsf.github.io/blog/2020/06/12/%E7%93%A6%E7%89%87Tile%E5%9C%B0%E5%9B%BE%E5%8E%9F%E7%90%86/'
-      ]
+      title: 'arcgis4-vue3-demo',
+      time:'2024-7-25',
+      link: `${DEMO_LINK_BASE}arcgis-demo`,
+      description: ''
+      
     },
   ],
   three: [
