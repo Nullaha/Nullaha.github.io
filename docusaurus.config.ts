@@ -96,8 +96,7 @@ const config: Config = {
         },
         {to: '/blog', label: 'Blog', position: 'left'},
         {to: '/todo', label: 'Todo', position: 'left'}, 
-        {to: '/test', label: 'Test', position: 'left'}, // 这里的路由对应的是/src/pages/test
-        {to: '/demo', label: 'Demo', position: 'left'}, 
+        {to: '/demo', label: 'Demo', position: 'left'}, // 这里的路由对应的是/src/pages/demo
 
         {
           href: 'https://github.com/Nullaha',
