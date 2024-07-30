@@ -19,6 +19,7 @@ tags: [docusaurus]
 
 [Ant Design V5 如何使用暗黑主题](https://juejin.cn/post/7242284648021164091?from=search-suggest)  
 
+[官网](https://ant-design.antgroup.com/docs/react/customize-theme-cn#%E4%BD%BF%E7%94%A8%E9%A2%84%E8%AE%BE%E7%AE%97%E6%B3%95)  
 
 ### 实现  
 
