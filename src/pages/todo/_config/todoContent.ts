@@ -4,6 +4,7 @@
 export interface ITodoItem {
   title:string;
   time: string;
+  description?: string;
   refer?: any[];
   state?: 'done';
   doneTime?: string;
@@ -89,6 +90,18 @@ export const TODO_CONTENT: ITodoItem[] = [
     time:'2024-7-24',
     // https://blog.csdn.net/qq_44376306/article/details/128552574
     // https://juejin.cn/post/7157010755814948900#heading-1
+  },
+  {
+    title: 'style',
+    time:'2024-7-30',
+    children: [
+      {
+        title: 'flex: 1;min-height: 0;的作用?', 
+        time:'2024-7-30', 
+        description: `parent1是height:100%,flex. child-a是...child-b是flex: 1;min-height: 0;为什么加了min-height后parent0就不会出现滚动条了？`,
+
+      },
+    ]
   },
   //  -----------------------------
 ];
