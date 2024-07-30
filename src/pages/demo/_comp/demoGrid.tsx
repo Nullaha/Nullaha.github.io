@@ -42,8 +42,9 @@ const DemoGrid = ({ name, demos }) => {
                     classNames={{body: styles.demoCardBody,header:styles.demoCardHeader}} //card的body的样式
                     // styles={{ body: { height: "100%", overflowY: "auto" } }} // 也可以这样写card的body的样式
                   >
-                    <Link to={item.link}>{item.title}</Link>
-                    <span>{item.time}</span>
+                    {/* <Link to={item.link}>{item.title}</Link> */}
+                    {/* <span>{item.time}</span> */}
+                    <span>{item.description}</span>
                   </Card>
                 </Col>
               ))}

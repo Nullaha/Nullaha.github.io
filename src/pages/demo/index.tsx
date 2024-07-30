@@ -10,7 +10,8 @@ import DemoGrid from './_comp/demoGrid';
 import useAntdTheme from '@site/src/hooks/useAntdTheme';
 // config
 import { GROUPED_DEMOS, DEMO_TYPES } from './_config/content';
-
+// style
+import styles from './index.module.css';
 
 
 export default function Demo(): JSX.Element {
@@ -28,21 +29,22 @@ export default function Demo(): JSX.Element {
       {/* <main>
       </main> */}
       <ConfigProvider theme={{algorithm: curTheme}}>
-
-        <Tabs
-          defaultActiveKey="2"
-          tabPosition="left"
-          onChange={onChange}
-          type="card"
-          items={DEMO_TYPES.map((name, i) => {
-            return {
-              key: name,
-              label: name,
-              children: (<DemoGrid name={name} demos={GROUPED_DEMOS[name] || []} />),
-              // icon: <Icon />,
-            };
-          })}
-        />
+        <div className={styles.demoBox}>
+          <Tabs
+            defaultActiveKey="2"
+            tabPosition="left"
+            onChange={onChange}
+            type="card"
+            items={DEMO_TYPES.map((name, i) => {
+              return {
+                key: name,
+                label: name,
+                children: (<DemoGrid name={name} demos={GROUPED_DEMOS[name] || []} />),
+                // icon: <Icon />,
+              };
+            })}
+          />
+        </div>
       </ConfigProvider>
     </Layout>
   );

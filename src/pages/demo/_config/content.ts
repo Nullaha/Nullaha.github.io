@@ -24,7 +24,7 @@ export const GROUPED_DEMOS: IGroupedDemos = {
       title: 'arcgis4-vue3-demo',
       time:'2024-7-25',
       link: `${DEMO_LINK_BASE}arcgis-demo`,
-      description: ''
+      description: '1.加载各种地图服务。'
       
     },
   ],
