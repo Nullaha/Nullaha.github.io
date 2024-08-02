@@ -118,6 +118,39 @@ export const TODO_CONTENT: ITodoItem[] = [
       },
     ]
   },
+  {
+    title: 'arcgis server发服务，怎么发？发什么服务？',
+    time:'2024-8-02',
+    // http://lbs.zjkelan.com/JSAPIBook/chapter2/3.1.html
+    // http://zhihu.geoscene.cn/article/3468
+    // https://desktop.arcgis.com/zh-cn/arcmap/latest/map/web-maps-and-services/adding-wmts-services.htm
+    // https://sampleserver6.arcgisonline.com/arcgis/rest/services/NLCDLandCover2001/ImageServer?f=jsapi
+    //   https://sampleserver6.arcgisonline.com/arcgis/rest/services/World_Street_Map/MapServer?f=jsapi
+    // https://sampleserver6.arcgisonline.com/arcgis/rest/services/SF311/FeatureServer/query
+    // https://sampleserver6.arcgisonline.com/arcgis/rest/services/SF311/FeatureServer/1
+    // https://sampleserver6.arcgisonline.com/arcgis/rest/services
+    // https://pro.arcgis.com/zh-cn/pro-app/latest/help/sharing/overview/configure-an-image-service.htm
+    // https://sampleserver6.arcgisonline.com/arcgis/rest/services/Census/MapServer?f=jsapi
+    // https://sampleserver6.arcgisonline.com/arcgis/rest/services/Census/MapServer
+    // https://www.jianshu.com/p/df66c0640de8
+  },
+  {
+    title: 'ceisum的使用？',
+    time:'2024-8-02',
+    // https://www.cnblogs.com/onsummer/p/17299759.html
+  },
+  {
+    title:'3dgs',
+    time:'2024-8-02',
+    // https://repo-sam.inria.fr/fungraph/3d-gaussian-splatting/
+    // https://github.com/amusi/CVPR2024-Papers-with-Code
+  },
+  {
+    title:'全栈练习',
+    time:'2024-8-02',
+    // https://fullstackopen.com/en/part6/react_query_use_reducer_and_the_context
+  },
+  
   //  -----------------------------
 ];
 
